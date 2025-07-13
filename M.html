@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUZAKKIR MIRZA - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dynamic': 'var(--primary-color)',
+                        'accent-dynamic': 'var(--accent-color)',
+                        dark: '#1A202C', // Dark gray
+                        light: '#F7FAFC', // Light gray
+                        glassBorder: 'rgba(255, 255, 255, 0.3)',
+                        glassBg: 'rgba(255, 255, 255, 0.05)',
+                        glassHoverBg: 'rgba(255, 255, 255, 0.15)',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        'md-hover': '0 8px 20px rgba(0, 0, 0, 0.15)',
+                        'lg-hover': '0 12px 30px rgba(0, 0, 0, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='60' font-size='40' text-anchor='middle' fill='%234299E1'%3EM%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --primary-color: #4299E1; /* Initial blue */
+            --accent-color: #F6AD55; /* Initial orange */
+            /* Add transition properties to root for global color transitions */
+            transition: --primary-color 2s ease-in-out, --accent-color 2s ease-in-out;
+        }
+
+        body {
+            background-color: #E2E8F0; /* Light background */
+            color: theme('colors.dark');
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+            cursor: none; /* Hide default cursor */
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        .glass-effect {
+            background: theme('colors.glassBg');
+            backdrop-filter: blur(10px);
+            border: 1px solid theme('colors.glassBorder');
+            box-shadow: theme('boxShadow.soft');
+            transition: all 0.3s ease-in-out;
+        }
+
+        .glass-card {
+            background: theme('colors.glassBg');
+            backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.glassBorder');
+            box-shadow: theme('boxShadow.soft');
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: theme('boxShadow.md-hover');
+            background: theme('colors.glassHoverBg');
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: theme('colors.light');
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary:hover {
+            background: theme('colors.light');
+            color: var(--primary-color);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary {
+            background: theme('colors.light');
+            color: theme('colors.dark');
+            border: 1px solid var(--primary-color);
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: theme('colors.light');
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-animate {
+            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+            color: var(--primary-color); /* Apply dynamic color */
+        }
+        .glass-card:hover .icon-animate {
+            transform: scale(1.1);
+            color: var(--accent-color); /* Change color on hover */
+        }
+
+        /* Skill item colorful background */
+        .skill-item {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .skill-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .animated-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animated-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-text-animate h2 {
+            animation: fadeInSlideUp 1.2s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .hero-text-animate p {
+            animation: fadeInSlideUp 1.2s ease-out 0.3s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #scrollToTopBtn {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        #scrollToTopBtn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            background-color: var(--accent-color); /* Changes color on hover */
+        }
+
+        .project-card img {
+            transition: transform 0.3s ease-in-out;
+        }
+        .project-card:hover img {
+            transform: scale(1.05);
+        }
+        .project-card .project-link {
+            color: var(--primary-color);
+        }
+        .project-card .project-link:hover {
+            transform: translateX(5px);
+            color: var(--accent-color);
+        }
+
+        /* Welcome Screen Styling */
+        .welcome-screen {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            transition: background 2s ease-in-out, opacity 0.8s ease-out; /* Smooth background gradient transition */
+        }
+
+        .welcome-screen h1 {
+            color: theme('colors.light');
+            animation: fadeInDown 1.5s ease-out forwards;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .welcome-screen button {
+            background-color: theme('colors.light');
+            color: var(--primary-color);
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+
+        .welcome-screen button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background-color: var(--primary-color);
+            color: theme('colors.light');
+        }
+
+        .welcome-image-box {
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            animation: fadeInScale 1.5s ease-out forwards;
+        }
+
+        /* Loading Screen */
+        #loadingScreen {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            transition: background 2s ease-in-out, opacity 0.5s ease-out; /* Smooth background gradient transition */
+        }
+
+        .spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid theme('colors.light');
+        }
+
+        /* Custom Cursor */
+        #custom-cursor {
+            background-color: var(--primary-color);
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 0 5px var(--accent-color));
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out, background-color 0.5s ease-in-out, filter 0.5s ease-in-out; /* Add transition for color */
+            pointer-events: none; /* Make it ignore mouse events */
+            position: fixed;
+            border-radius: 50%;
+            z-index: 9999; /* Ensure it's above everything */
+            transform: translate(-50%, -50%); /* Center the cursor on its coordinates */
+        }
+
+        .interactive-element {
+            cursor: none; /* Hide default cursor on interactive elements as well */
+        }
+
+        .interactive-element:hover ~ #custom-cursor {
+            transform: translate(-50%, -50%) scale(1.2);
+            background-color: var(--accent-color);
+            filter: drop-shadow(0 0 10px var(--primary-color));
+        }
+
+        /* AI Assistant */
+        .assistant-svg-container {
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease-in-out;
+        }
+        .assistant-svg-container:hover {
+            transform: scale(1.05);
+        }
+        .assistant-svg-container svg {
+            fill: var(--primary-color);
+            stroke: var(--accent-color);
+        }
+        .assistant-svg-container svg circle,
+        .assistant-svg-container svg rect {
+            fill: var(--primary-color);
+            stroke: var(--accent-color);
+            transition: fill 1s ease-in-out, stroke 1s ease-in-out; /* Smooth transition for SVG parts */
+        }
+        .assistant-svg-container svg circle:nth-child(3),
+        .assistant-svg-container svg circle:nth-child(4) {
+            fill: white;
+        }
+        .assistant-svg-container svg circle:nth-child(5),
+        .assistant-svg-container svg circle:nth-child(6) {
+            fill: theme('colors.dark');
+        }
+        .assistant-svg-container svg circle:nth-child(8) {
+            fill: var(--accent-color);
+            stroke: var(--primary-color);
+        }
+
+        #assistantMessageBox {
+            background-color: theme('colors.light');
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transform-origin: bottom right;
+            padding: 0.7rem 1rem;
+            border-radius: 0.7rem;
+            font-size: 0.9rem;
+        }
+        #assistantMessageBox.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        #assistantMessageBox:after {
+            border-top: 8px solid theme('colors.light');
+        }
+
+        #assistantMessageBox .btn-action {
+            background-color: var(--accent-color);
+            color: theme('colors.dark');
+            border-radius: 0.3rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #assistantMessageBox .btn-action:hover {
+            background-color: var(--primary-color);
+            color: theme('colors.light');
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Certificates Section Styling */
+        .certificate-item {
+            background-color: theme('colors.light');
+            border-radius: 0.8rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .certificate-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-color);
+        }
+        .certificate-item a {
+            color: var(--primary-color);
+        }
+        .certificate-item a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Vanta.js background style */
+        #vanta-globe, #vanta-net-welcome {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+        #vanta-net-welcome {
+            position: absolute;
+        }
+
+        /* Style for the dynamic color elements */
+        .color-dynamic {
+            color: var(--primary-color);
+            transition: color 1s ease-in-out; /* Smooth color transition */
+        }
+        .bg-color-dynamic {
+            background-color: var(--primary-color);
+            transition: background-color 1s ease-in-out;
+        }
+        .border-color-dynamic {
+            border-color: var(--primary-color);
+            transition: border-color 1s ease-in-out;
+        }
+        .text-accent-dynamic {
+            color: var(--accent-color);
+            transition: color 1s ease-in-out;
+        }
+        .shadow-accent-dynamic {
+            box-shadow: 0 0 10px var(--accent-color);
+            transition: box-shadow 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div id="custom-cursor"></div>
+
+    <div id="loadingScreen" class="fixed inset-0 flex items-center justify-center z-[999] opacity-100">
+        <div class="spinner w-16 h-16 border-4 border-solid rounded-full animate-spin"></div>
+    </div>
+
+    <div id="welcomeScreen" class="fixed inset-0 flex flex-col items-center justify-center z-50 welcome-screen text-center p-4">
+        <div id="vanta-net-welcome"></div>
+        <div class="welcome-image-box w-40 h-40 rounded-full overflow-hidden mb-8 flex items-center justify-center relative z-10">
+            <img src="your-photo.jpg/150x150?text=Your+Picture" alt="your-photo.jpg" class="w-full h-full object-cover">
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 relative z-10">WELCOME TO MY PORTFOLIO</h1>
+        <button id="enterPortfolioBtn" class="px-8 py-3 rounded-full text-xl font-semibold shadow-lg hover:shadow-xl relative z-10">
+            ENTER PORTFOLIO
+        </button>
+    </div>
+
+    <div id="mainContent" style="display: none;">
+        <header class="glass-effect py-4 px-6 md:px-12 flex items-center justify-between shadow-lg fixed top-0 left-0 w-full z-50">
+            <h1 class="text-2xl md:text-3xl font-bold text-dark color-dynamic">MUZAKKIR MIRZA&trade;</h1>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#home" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    HOME
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    ABOUT ME
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#projects" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    PROJECTS
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#skills" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    SKILLS
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#certificates" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    CERTIFICATES
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact-info" class="text-dark hover:text-primary-dynamic transition duration-300 font-medium relative group interactive-element">
+                    CONTACT
+                    <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dynamic transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </nav>
+            <button class="md:hidden text-dark text-2xl focus:outline-none interactive-element">
+                &#9776;
+            </button>
+        </header>
+
+        <main class="pt-24">
+            <section id="home" class="hero text-center py-12 px-4 glass-card mx-auto my-6 rounded-2xl shadow-soft animated-section hero-text-animate max-w-3xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-dark leading-tight">Hi, I'm <span class="text-primary-dynamic">MUZAKKIR MIRZA</span></h2>
+                <p class="text-lg md:text-xl text-gray-700 mt-3">A Passionate <span class="font-semibold text-dark">Student & Web Developer</span> focusing on HTML & CSS.</p>
+                <div class="mt-6 flex justify-center space-x-4">
+                    <a href="#projects" class="btn-primary px-6 py-2 rounded-full text-lg font-semibold interactive-element">View My Work</a>
+                    <a href="#contact-info" class="btn-secondary px-6 py-2 rounded-full text-lg font-semibold interactive-element">Get in Touch</a>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5 max-w-6xl mx-auto">
+                <div id="about" class="glass-card rounded-2xl p-5 shadow-soft animated-section">
+                    <h2 class="text-xl font-bold text-primary-dynamic mb-3 flex items-center">
+                        <svg class="w-7 h-7 mr-2 icon-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10a6 6 0 11-12 0 6 6 0 0112 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zM12 14v-4m0 0V6m0 4h4m-4 0H8"></path></svg>
+                        ABOUT ME
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed text-sm">I'm a passionate student diving deep into web development, specifically focusing on creating beautiful and user-friendly interfaces with HTML and CSS. I love bringing ideas to life on the web and am constantly learning new ways to improve my craft.</p>
+                </div>
+
+                <div id="projects" class="glass-card rounded-2xl p-5 shadow-soft animated-section project-card">
+                    <h2 class="text-xl font-bold text-primary-dynamic mb-3 flex items-center">
+                        <svg class="w-7 h-7 mr-2 icon-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1l-.75-3M3 13h18M5 17h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        MY PROJECTS
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed text-sm mb-3">HERE ARE A FEW PROJECTS I HAVE BUILT USING PURE HTML & CSS:</p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-light p-3 rounded-lg shadow-sm interactive-element">
+                            <img src="https://via.placeholder.com/300x150?text=Project+1" alt="Project 1" class="rounded-md mb-2">
+                            <h4 class="text-lg font-semibold text-dark mb-1">Animated Landing Page</h4>
+                            <p class="text-gray-600 text-xs mb-2">A responsive landing page with engaging CSS animations.</p>
+                            <a href="#" target="_blank" class="text-primary-dynamic hover:underline text-sm flex items-center transition-transform duration-200 project-link">View Project <span class="ml-1">&rarr;</span></a>
+                        </div>
+                        <div class="bg-light p-3 rounded-lg shadow-sm interactive-element">
+                            <img src="https://via.placeholder.com/300x150?text=Project+2" alt="Project 2" class="rounded-md mb-2">
+                            <h4 class="text-lg font-semibold text-dark mb-1">Interactive Photo Gallery</h4>
+                            <p class="text-gray-600 text-xs mb-2">A clean photo gallery with custom hover effects.</p>
+                            <a href="#" target="_blank" class="text-primary-dynamic hover:underline text-sm flex items-center transition-transform duration-200 project-link">View Project <span class="ml-1">&rarr;</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contact-info" class="glass-card rounded-2xl p-5 shadow-soft animated-section">
+                    <h2 class="text-xl font-bold text-primary-dynamic mb-3 flex items-center">
+                        <svg class="w-7 h-7 mr-2 icon-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        CONTACT INFO
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed text-sm mb-3">Feel free to reach out! I'm always open to discussing new projects or opportunities.</p>
+                    <p class="text-gray-700 font-medium text-sm">Email: <a href="mailto:muzakkirmirza1122@gmail.com" class="text-primary-dynamic hover:underline interactive-element">muzakkirmirza1122@gmail.com</a></p>
+                    <p class="text-gray-700 font-medium text-sm mt-2">Phone: <span class="text-primary-dynamic">+92 3483181245</span></p>
+                    <div class="mt-4 flex space-x-3 justify-center">
+                        <a href="https://www.linkedin.com/in/muzakkir-mirza-a912a2272/" target="_blank" class="text-gray-700 hover:text-primary-dynamic transition duration-300 transform hover:scale-110 interactive-element">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zM.02 24h4.96V8H.02V24zM22.23 8c-2.73 0-3.91 1.227-4.48 2.5h-.07v-2.5H13.6c.07 1.413 0 16 0 16h4.96V14.01c0-.985.06-1.97.46-2.62c.94-1.524 2.68-1.524 3.56 0 .58.97.62 2.23.62 3.5v9.11h4.96v-9.11c0-4.01-2.2-6.81-5.7-6.81z"/></svg>
+                        </a>
+                        <a href="https://github.com/Muzakkirmirza" target="_blank" class="text-gray-700 hover:text-primary-dynamic transition duration-300 transform hover:scale-110 interactive-element">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.82-.26.82-.58v-2.09c-3.33.72-4.04-1.61-4.04-1.61-.54-1.37-1.32-1.74-1.32-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.77.42-1.3.76-1.6C7.2 18.24 4.8 17.36 4.8 13.5c0-.9.32-1.64.85-2.22-.09-.22-.37-1.05.08-2.19 0 0 .7-.22 2.3.84a8.1 8.1 0 014.5 0c1.6-.96 2.3-.84 2.3-.84.45 1.14.17 1.97.08 2.19.53.58.85 1.32.85 2.22 0 3.87-2.4 4.74-4.8 5.02.37.32.7.96.7 1.93v2.86c0 .32.22.69.82.58C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="glass-card mx-auto my-6 p-5 rounded-2xl shadow-soft animated-section max-w-6xl">
+                <h3 class="text-xl font-bold text-primary-dynamic mb-4 flex items-center">
+                    <svg class="w-7 h-7 mr-2 icon-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    MY SKILLS
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center skill-item interactive-element">
+                        <p class="text-lg font-semibold text-dark">HTML5</p>
+                        <p class="text-xs text-gray-600 mt-1">Structuring Web Content</p>
+                    </div>
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center skill-item interactive-element">
+                        <p class="text-lg font-semibold text-dark">CSS3</p>
+                        <p class="text-xs text-gray-600 mt-1">Styling and Layout</p>
+                    </div>
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center skill-item interactive-element">
+                        <p class="text-lg font-semibold text-dark">Tailwind CSS</p>
+                        <p class="text-xs text-gray-600 mt-1">Rapid UI Development</p>
+                    </div>
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center skill-item interactive-element">
+                        <p class="text-lg font-semibold text-dark">Responsive Design</p>
+                        <p class="text-xs text-gray-600 mt-1">Cross-Device Compatibility</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="certificates" class="glass-card mx-auto my-6 p-5 rounded-2xl shadow-soft animated-section max-w-6xl">
+                <h3 class="text-xl font-bold text-primary-dynamic mb-4 flex items-center">
+                    <svg class="w-7 h-7 mr-2 icon-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 002.944 12c0 4.965 3.033 9.39 7.458 11.153a1 1 0 001.096 0C18.023 21.39 21.056 16.965 21.056 12A12.001 12.001 0 0016.382 7.984z"></path></svg>
+                    MY CERTIFICATES
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center certificate-item interactive-element">
+                        <img src="https://via.placeholder.com/300x200?text=Certificate+1" alt="Certificate 1" class="rounded-md mb-2 mx-auto">
+                        <h4 class="text-md font-semibold text-dark mb-1">Web Development Fundamentals</h4>
+                        <p class="text-gray-600 text-xs">Issued by [Institution Name]</p>
+                        <a href="#" target="_blank" class="text-primary-dynamic hover:underline text-sm mt-2 block">View Certificate</a>
+                    </div>
+                    <div class="bg-light p-3 rounded-lg shadow-sm text-center certificate-item interactive-element">
+                        <img src="https://via.placeholder.com/300x200?text=Certificate+2" alt="Certificate 2" class="rounded-md mb-2 mx-auto">
+                        <h4 class="text-md font-semibold text-dark mb-1">Advanced CSS Techniques</h4>
+                        <p class="text-xs text-gray-600 mt-1">Issued by [Institution Name]</p>
+                        <a href="#" target="_blank" class="text-primary-dynamic hover:underline text-sm mt-2 block">View Certificate</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="glass-effect py-5 px-6 text-center text-dark mt-8 shadow-inner">
+            <p class="text-sm font-medium">&copy; 2025 Muzakkir Mirza. All rights reserved.</p>
+            <div class="mt-2 flex justify-center space-x-3">
+                <a href="https://www.linkedin.com/in/muzakkir-mirza-a912a2272/" target="_blank" class="text-dark hover:text-primary-dynamic transition duration-300 transform hover:scale-110 interactive-element">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zM.02 24h4.96V8H.02V24zM22.23 8c-2.73 0-3.91 1.227-4.48 2.5h-.07v-2.5H13.6c.07 1.413 0 16 0 16h4.96V14.01c0-.985.06-1.97.46-2.62c.94-1.524 2.68-1.524 3.56 0 .58.97.62 2.23.62 3.5v9.11h4.96v-9.11c0-4.01-2.2-6.81-5.7-6.81z"/></svg>
+                </a>
+                <a href="https://github.com/Muzakkirmirza" target="_blank" class="text-dark hover:text-primary-dynamic transition duration-300 transform hover:scale-110 interactive-element">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.82-.26.82-.58v-2.09c-3.33.72-4.04-1.61-4.04-1.61-.54-1.37-1.32-1.74-1.32-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.77.42-1.3.76-1.6C7.2 18.24 4.8 17.36 4.8 13.5c0-.9.32-1.64.85-2.22-.09-.22-.37-1.05.08-2.19 0 0 .7-.22 2.3.84a8.1 8.1 0 014.5 0c1.6-.96 2.3-.84 2.3-.84.45 1.14.17 1.97.08 2.19.53.58.85 1.32.85 2.22 0 3.87-2.4 4.74-4.8 5.02.37.32.7.96.7 1.93v2.86c0 .32.22.69.82.58C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+                </a>
+            </div>
+        </footer>
+
+        <button id="scrollToTopBtn" class="fixed bottom-6 right-6 p-3 rounded-full text-white text-xl shadow-lg hover:shadow-xl opacity-0 transition-opacity duration-300 z-40 bg-color-dynamic" aria-label="Scroll to top">&#9650;</button>
+
+        <div class="assistant-svg-container fixed bottom-6 left-6 z-40 w-16 h-16 cursor-pointer interactive-element">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="var(--primary-color)" stroke="var(--accent-color)" stroke-width="6">
+                <rect x="50" y="80" width="100" height="90" rx="20" ry="20" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+                <circle cx="100" cy="70" r="40" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+                <circle cx="80" cy="65" r="8" fill="white"/>
+                <circle cx="120" cy="65" r="8" fill="white"/>
+                <circle cx="80" cy="65" r="4" fill="#1A202C"/>
+                <circle cx="120" cy="65" r="4" fill="#1A202C"/>
+                <line x1="100" y1="30" x2="100" y2="40" stroke="var(--accent-color)" stroke-width="6" stroke-linecap="round"/>
+                <circle cx="100" cy="25" r="5" fill="#F6AD55" stroke="#DD6B20"/>
+                <rect x="80" y="90" width="40" height="10" rx="3" ry="3" fill="#1A202C"/>
+                <rect x="30" y="90" width="20" height="60" rx="10" ry="10" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+                <rect x="150" y="90" width="20" height="60" rx="10" ry="10" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+                <rect x="70" y="170" width="20" height="30" rx="10" ry="10" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+                <rect x="110" y="170" width="20" height="30" rx="10" ry="10" fill="var(--primary-color)" stroke="var(--accent-color)"/>
+            </svg>
+        </div>
+        <div id="assistantMessageBox" class="fixed bottom-24 left-6 bg-light text-dark p-4 rounded-lg shadow-lg opacity-0 transition-opacity transform translate-y-4 scale-95 duration-300 z-50 w-64">
+            <p id="assistantMessageText" class="mb-2 text-sm">Hello there! I'm your AI assistant. How can I help you today?</p>
+            <button class="btn-action px-3 py-1 text-sm">Got it!</button>
+            <div class="absolute bottom-[-8px] left-4 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent"></div>
+        </div>
+    </div>
+    
+    <div id="vanta-globe"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.globe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
+
+    <script>
+        // Custom Cursor
+        const customCursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', e => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        // Loading Screen
+        const loadingScreen = document.getElementById('loadingScreen');
+        window.addEventListener('load', () => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500); // Hide after transition
+        });
+
+        // Dynamic Color Palette
+        const colorPalettes = [
+            { primary: '#4299E1', accent: '#F6AD55' }, // Blue & Orange
+            { primary: '#82589F', accent: '#BADC58' }, // Purple & Light Green
+            { primary: '#FF7675', accent: '#74B9FF' }, // Red & Light Blue
+            { primary: '#55E6C1', accent: '#FDA7DF' }, // Mint Green & Pink
+            { primary: '#FFD32A', accent: '#FF4757' }  // Yellow & Red
+        ];
+        let currentColorIndex = 0;
+
+        function applyColors(palette) {
+            // Apply colors directly to root CSS variables for global transition
+            document.documentElement.style.setProperty('--primary-color', palette.primary);
+            document.documentElement.style.setProperty('--accent-color', palette.accent);
+            
+            // Update Vanta.js colors if it's initialized
+            if (window.vantaGlobeInstance) {
+                window.vantaGlobeInstance.setOptions({
+                    color: palette.primary,
+                    color2: palette.accent,
+                });
+            }
+            if (window.vantaNetWelcomeInstance) {
+                window.vantaNetWelcomeInstance.setOptions({
+                    color: palette.primary,
+                });
+            }
+        }
+
+        function cycleColors() {
+            currentColorIndex = (currentColorIndex + 1) % colorPalettes.length;
+            applyColors(colorPalettes[currentColorIndex]);
+        }
+
+        // Initialize with first palette
+        applyColors(colorPalettes[currentColorIndex]);
+        // Start cycling colors every 5 seconds
+        setInterval(cycleColors, 5000);
+
+
+        // Welcome Screen Logic
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const enterPortfolioBtn = document.getElementById('enterPortfolioBtn');
+        const mainContent = document.getElementById('mainContent');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            window.vantaNetWelcomeInstance = VANTA.NET({
+                el: "#vanta-net-welcome",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: colorPalettes[0].primary,
+                backgroundColor: '#E2E8F0',
+                points: 10.00,
+                maxDistance: 20.00,
+                spacing: 15.00
+            });
+        });
+
+        enterPortfolioBtn.addEventListener('click', () => {
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+
+                if (window.vantaNetWelcomeInstance) {
+                    window.vantaNetWelcomeInstance.destroy();
+                    window.vantaNetWelcomeInstance = null;
+                }
+
+                // Initialize Vanta.GLOBE after main content is shown
+                window.vantaGlobeInstance = VANTA.GLOBE({
+                    el: "#vanta-globe",
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: colorPalettes[currentColorIndex].primary,
+                    color2: colorPalettes[currentColorIndex].accent,
+                    backgroundColor: '#E2E8F0', // Keep main background color consistent
+                    size: 0.80,
+                    points: 20.00
+                });
+
+                animateOnScroll();
+                startAIAssistant();
+            }, 800); // Wait for the welcome screen to fade out
+        });
+
+
+        // Scroll to Top Button
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollToTopBtn.classList.add('opacity-100');
+                scrollToTopBtn.classList.remove('opacity-0');
+            } else {
+                scrollToTopBtn.classList.add('opacity-0');
+                scrollToTopBtn.classList.remove('opacity-100');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Section Animations on Scroll
+        const animatedSections = document.querySelectorAll('.animated-section');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // observer.unobserve(entry.target); // Uncomment if you want animation only once
+                } else {
+                    // entry.target.classList.remove('is-visible'); // Uncomment if you want to re-animate on scroll
+                }
+            });
+        }, observerOptions);
+
+        function animateOnScroll() {
+            animatedSections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+
+        // AI Assistant - Interactive Companion Logic
+        const assistantSvgContainer = document.querySelector('.assistant-svg-container'); // Corrected selector
+        const assistantMessageBox = document.getElementById('assistantMessageBox');
+        const assistantMessageText = document.getElementById('assistantMessageText');
+        const assistantActionButton = assistantMessageBox.querySelector('.btn-action');
+
+        const initialMessages = [
+            "Hi there! I'm your AI assistant. How can I help you today?😎",
+            "Welcome! Feel free to explore my portfolio.😎",
+            "Need help navigating? Just ask!😊",
+            "Glad to have you here. Discover my work.😊"
+        ];
+
+        const sectionMessages = {
+            "#home": {
+                message: "This is the home section. You can find a brief introduction here.😁",
+                action: "Explore further!😄"
+            },
+            "#about": {
+                message: "Learn more about Muzakkir Mirza and his journey here.😉",
+                action: "Discover more!😃"
+            },
+            "#projects": {
+                message: "Dive into Muzakkir's projects and see his work.😂",
+                action: "View projects!🤨"
+            },
+            "#skills": {
+                message: "Check out the skills Muzakkir has developed.😙",
+                action: "See skills!😍"
+            },
+            "#certificates": {
+                message: "Here are the certifications Muzakkir has earned.😎",
+                action: "View certificates!😊"
+            },
+            "#contact-info": {
+                message: "Want to get in touch? Find contact details here.🚀",
+                action: "Connect now!☂"
+            }
+        };
+
+        let currentMessageIndex = 0;
+        let assistantInterval;
+        let hideMessageTimeout;
+
+        function showAssistantMessage(message, actionText = "Got it!") {
+            assistantMessageText.textContent = message;
+            assistantActionButton.textContent = actionText;
+            assistantMessageBox.classList.add('show');
+            assistantMessageBox.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+            clearTimeout(hideMessageTimeout);
+            hideMessageTimeout = setTimeout(() => {
+                assistantMessageBox.classList.remove('show');
+                assistantMessageBox.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+            }, 8000); // Message lingers for 8 seconds
+        }
+
+        function cycleInitialMessages() {
+            showAssistantMessage(initialMessages[currentMessageIndex % initialMessages.length]);
+            currentMessageIndex++;
+        }
+
+        function startAIAssistant() {
+            setTimeout(() => {
+                cycleInitialMessages();
+            }, 2000); // First message after 2 seconds
+
+            assistantInterval = setInterval(() => {
+                cycleInitialMessages();
+            }, 15000); // Cycle messages every 15 seconds
+        }
+
+        assistantActionButton.addEventListener('click', () => {
+            assistantMessageBox.classList.remove('show');
+            assistantMessageBox.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const scrollObserverOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = `#${entry.target.id}`;
+                    if (sectionMessages[sectionId]) {
+                        clearInterval(assistantInterval);
+                        clearTimeout(hideMessageTimeout);
+                        showAssistantMessage(sectionMessages[sectionId].message, sectionMessages[sectionId].action);
+                        assistantInterval = setInterval(() => {
+                            cycleInitialMessages();
+                        }, 15000);
+                    }
+                }
+            });
+        }, scrollObserverOptions);
+
+        sections.forEach(section => {
+            scrollObserver.observe(section);
+        });
+
+        let assistantHideTimeout;
+        const hideAssistantBox = () => {
+            assistantHideTimeout = setTimeout(() => {
+                assistantMessageBox.classList.remove('show');
+                assistantMessageBox.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+            }, 500); // Hide after 0.5s if mouse leaves
+        };
+
+        assistantSvgContainer.addEventListener('mouseleave', hideAssistantBox);
+        assistantMessageBox.addEventListener('mouseleave', hideAssistantBox);
+        assistantSvgContainer.addEventListener('mouseenter', () => {
+            clearTimeout(assistantHideTimeout);
+        });
+        assistantMessageBox.addEventListener('mouseenter', () => {
+            clearTimeout(assistantHideTimeout);
+        });
+    </script>
+</body>
+</html>
